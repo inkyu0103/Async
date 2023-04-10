@@ -3,8 +3,24 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [post,setPost] = useState(null)
+
+  const getRandomNumber = () => Math.ceil(Math.random() * 10)
+
+  const fetchPost = async() => {
+    const postNumber = getRandomNumber()
+    const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${postNumber}`)
+    const data = await response.json()
+    return data.title
+  }
+
+  const handleFetchPost = async () => {
+    const result = await fetchPost()
+    setPost(result)
+  }
+
 
   return (
     <div className="App">
@@ -16,13 +32,14 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>비동기 테스트</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={handleFetchPost}>
+          getPost!
         </button>
+       
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          post is {post}
         </p>
       </div>
       <p className="read-the-docs">
